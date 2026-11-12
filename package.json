@@ -1,0 +1,28 @@
+{
+  "name": "alpine-waiter-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0 -p 3200",
+    "build": "next build",
+    "start": "next start -H 0.0.0.0 -p 3200",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test tests/*.test.cjs"
+  },
+  "dependencies": {
+    "next": "14.2.35",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "lucide-react": "^0.544.0",
+    "socket.io-client": "^4.8.4"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "@types/node": "^22",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "tailwindcss": "^3.4.1",
+    "postcss": "^8",
+    "autoprefixer": "^10"
+  }
+}

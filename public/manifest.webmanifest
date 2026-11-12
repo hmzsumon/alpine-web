@@ -1,0 +1,17 @@
+{
+  "name": "Alpine Restaurant Staff",
+  "short_name": "Alpine",
+  "lang": "bn",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#14141f",
+  "theme_color": "#14141f",
+  "icons": [
+    {
+      "src": "/alpine-logo.png",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ]
+}

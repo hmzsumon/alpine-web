@@ -1,0 +1,12 @@
+const path=require('node:path');
+const ts=require('typescript');
+require.extensions['.ts']=(module,file)=>{const source=require('node:fs').readFileSync(file,'utf8');module._compile(ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,file);};
+const test=require('node:test'),assert=require('node:assert/strict');
+const {matchesFood}=require('../utils/menuNames.ts');
+const {parseVoiceOrder,mergeVoiceItems}=require('../utils/voiceOrder.ts');
+const {moveCartPortion}=require('../utils/cartServing.ts');
+const menu=[{id:'dal',code:'19',name:'Mug Dal Half',nameBn:'মুগ ডাল হাফ',category:'Breakfast',station:'Main Kitchen',active:true,price:30},{id:'paratha',code:'20',name:'Normal Paratha',nameBn:'সাধারণ পরোটা',category:'Paratha',station:'Main Kitchen',active:true,price:25}];
+test('Bangla/English/code lookup uses the same native vocabulary',()=>{assert(matchesFood(menu[0],'১৯'));assert(matchesFood(menu[0],'মুগ ডাল'));assert(matchesFood(menu[0],'Mug Dal'));assert(!matchesFood(menu[0],'20'));});
+test('voice quantities produce review rows and never submit orders',()=>{const rows=parseVoiceOrder('দুই পরোটা, এক হাফ মুগ ডাল',menu,'dine_in');assert.equal(rows.length,2);assert.deepEqual(rows.map(r=>r.quantity),[2,1]);});
+test('parcel split preserves amount and original input; merge rejects unavailable food',()=>{const items=[{menuId:'dal',name:'Mug Dal Half',price:30,station:'Main Kitchen',quantity:3,fulfillment:'dine_in'}];const next=moveCartPortion(items,'dal','dine_in','parcel',1);assert.equal(next.reduce((n,l)=>n+l.price*l.quantity,0),90);assert.equal(items[0].quantity,3);assert.throws(()=>mergeVoiceItems(items,[{menuId:'dal',quantity:1,fulfillment:'dine_in'}],menu,false,{dal:{available:false,quantity:0}}));});
+test('browser UUID remains usable on LAN HTTP and is a valid v4 retry identity',()=>{const {uuid}=require('../utils/uuid.ts');assert.match(uuid(),/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);assert.notEqual(uuid(),uuid());});
